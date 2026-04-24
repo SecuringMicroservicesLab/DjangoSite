@@ -1,1 +1,77 @@
-hello
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Securing Microservices</title>
+    <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    p {
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #e2e2e2;
+    }
+    /* Style for the primary action */
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    </style>
+  </head>
+  <body>
+
+    <div class="card">
+      <h1>Microservice Dashboard</h1>
+
+      <p>
+        Welcome to the management interface. Use the buttons below to interact with 
+        the backend gRPC services or trigger security protocols.
+      </p>
+
+      <form method="post" action="{% url 'check_authentication' %}">
+        {% csrf_token %}
+        <div style="margin-bottom: 10px;">
+          <input type="text" name="username" placeholder="Enter username..." required>
+        </div>
+        <button class="btn-primary" type="submit">Check Authentication</button>
+      </form>
+    </div>
+
+  </body>
+</html>
