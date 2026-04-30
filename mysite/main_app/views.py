@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 import grpc
 import services_pb2
-import services_pb2_grcp
+import services_pb2_grpc
 # generated gRPC files go here
 
 # create your views here.
