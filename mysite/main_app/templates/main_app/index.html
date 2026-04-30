@@ -71,6 +71,18 @@
         </div>
         <button class="btn-primary" type="submit">Check Authentication</button>
       </form>
+
+      {% if result %}
+        <div class="alert alert-success">
+          {{ result }}
+        </div>
+      {% endif %}
+
+      {% if error %}
+        <div class="alert alert-error">
+          {{ error }}
+        </div>
+      {% endif %}
     </div>
 
   </body>

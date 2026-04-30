@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 import grpc
+import services_pb2
+import services_pb2_grcp
 # generated gRPC files go here
 
 # create your views here.
@@ -15,26 +17,41 @@ def home_view(request):
         username = request.POST.get('username')
 
         try:
-            # Logic: Talk to your C++ Microservice
+            # open a connection to the Orchestrator with the given ip from gcp
+            # The 'with' statement ensures the channel closes safely after the call
+            with grpc.insecure_channel('localhost:50050') as channel:
 
-            # (Replace with your actual gRPC stub/channel logic)
-            # response = stub.GetUserReport(UserRequest(username=username))
+                # create the stub for the Orchestrator
+                stub = services_pb2_grpc.OrchestratorStub(channel)
 
-            # response = stub.GetUserReport(UserRequest(username=username))
-            # context['result'] = response.summary
+                # create the request message
+                grpc_request = services_pb2.Name(name=username)
 
-            # Store the result for the template if success
+                # call the orchestrator server
+                response = stub.ExecuteAccessCheck(grpc_request)
 
-            context['result'] = f"Successfully verified {username} via C++ Backend."
+                # check if authenticated
+                if response.is_authenticated:
+                    # If valid, unpack the stats for the HTML template
+                    context['result'] = f"User is Valid! {username}'s favorite color is {response.fav_color} and their number is {response.fav_number}."
+                else:
+                    # If invalid, show an error
+                    context['error'] = f"Access Denied: '{username}' is not in the system."
+
+            context['result'] = f"Successfully verified {username} via C++ username checker service."
 
         except grpc.RpcError as e:
-            # Captures specific network/VPC blocks
+            # captures specific network/VPC blocks
             context['error'] = f"gRPC Connection Failed: {e.code()} - {e.details()}"
         except Exception as e:
-            # Captures local Python errors
+            # captures local Python errors
             context['error'] = f"Local System Error: {str(e)}"
 
     # Both GET and POST return the same template
     # If it was a GET, context is empty, so no results show up.
     # If it was a POST, context has 'result' or 'error'.
     return render(request, 'main_app/index.html', context)
+
+
+
+
