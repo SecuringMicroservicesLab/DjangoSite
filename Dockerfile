@@ -15,4 +15,4 @@ RUN pip install gunicorn
 COPY . .
 
 # Start the server (Replace 'myproject' with the actual name of your main Django folder!)
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "mysite.mysite.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "mysite.wsgi:application"]
