@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+import os
 import grpc
 import services_pb2
 import services_pb2_grpc
@@ -17,9 +18,14 @@ def home_view(request):
         username = request.POST.get('username')
 
         try:
+            # grab the address from the environment variable
+            # localhost:50050 is the fallback
+            orchestrator_target = os.getenv('ORCHESTRATOR_ADDRESS', 'localhost:50050')
+
             # open a connection to the Orchestrator with the given ip from gcp
             # The 'with' statement ensures the channel closes safely after the call
-            with grpc.insecure_channel('localhost:50050') as channel:
+            with grpc.insecure_channel(orchestrator_target) as channel:
+
 
                 # create the stub for the Orchestrator
                 stub = services_pb2_grpc.OrchestratorStub(channel)
@@ -38,7 +44,7 @@ def home_view(request):
                     # If invalid, show an error
                     context['error'] = f"Access Denied: '{username}' is not in the system."
 
-            context['result'] = f"Successfully verified {username} via C++ username checker service."
+            #context['result'] = f"Successfully verified {username} via C++ username checker service."
 
         except grpc.RpcError as e:
             # captures specific network/VPC blocks
