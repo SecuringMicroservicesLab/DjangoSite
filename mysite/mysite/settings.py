@@ -32,9 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 # 2. Tell Django to trust form submissions from this exact HTTPS URL
-CSRF_TRUSTED_ORIGINS = [
-    'https://djangosite-499038253279.us-central1.run.app'
-]
+CSRF_TRUSTED_ORIGINS = ['*']
 
 
 # Application definition
