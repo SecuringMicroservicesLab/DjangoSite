@@ -29,10 +29,10 @@ SECRET_KEY = 'django-insecure-=5i=ehkx-6a-##eapa%2zsinl#fn8#hksm#=r%$en7k_@up%#l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'your url goes here (without the https:// at the front)]
 
 # 2. Tell Django to trust form submissions from this exact HTTPS URL
-CSRF_TRUSTED_ORIGINS = ['*']
+CSRF_TRUSTED_ORIGINS = ['your url goes here (WITH the https:// at the front) and remove the / at the end']
 
 
 # Application definition
